@@ -1,40 +1,21 @@
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main()
 {
-    int n1, n2, operacao, opcao;
-    printf("Digite um numero: ");
-    scanf("%d", &n1);
-    printf("Digite outro numero: ");
-    scanf("%d", &n2);
-    printf("Escolha a operação que quer fazer : \n");
-    printf("MENU \n");
-    printf("1 - +  \n");
-    printf("2 - -  \n");
-    printf("3 - *  \n");
-    printf("4 - /  \n");
-    scanf("%d", &opcao);
-    switch (opcao)
-    {
-    case 1:
-        operacao = n1 + n2;
-        printf("Resultado : %d", operacao);
-        break;
-    case 2:
-        operacao = n1 - n2;
-        printf("Resultado : %d", operacao);
-        break;
-    case 3:
-        operacao = n1 * n2;
-        printf("Resultado : %d", operacao);
-        break;
-    case 4:
-        operacao = n1 / n2;
-        printf("Resultado : %d", operacao);
-        break;
-    default:
-        printf("Nenhuma opção foi selecionada");
-    }
-
+    //Usa o tempo atual como semente
+    srand(time(NULL));
+    
+    //Dados de 1 a 6 
+    int dado1 = (rand() % 6) + 1;
+    int dado2 = (rand() % 6) + 1;
+    int dado3 = (rand() % 6) + 1;
+    
+    int soma = dado1 + dado2 + dado3;
+    printf("Valores: %d %d %d \n" , dado1 , dado2 , dado3);
+    printf("Resultado da soma é: %d" , soma);
+    
     return 0;
 }
