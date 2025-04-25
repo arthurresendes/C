@@ -3,14 +3,12 @@
 
 int main()
 {
-    int num, i;
-    printf("Digite um número: ");
+    int num , i;
+    printf("Digite um numero: ");
     scanf("%d", &num);
-    for (i = 0; i <= num; i++)
-    {
-        if (i % 2 == 0)
-        {
-            printf("Números pares são: %d \n", i);
+    for (i = 0 ; i < num ; i++){
+        if(i % 2 == 0){
+            printf("%d \n", i);
         }
     }
 
