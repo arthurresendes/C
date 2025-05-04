@@ -5,7 +5,7 @@ int main()
     char nome [150];
     int idade , nasc , atual;
     printf("Digite seu nome completo: ");
-    scanf("%s" , nome);
+    fgets(nome , sizeof(nome) , stdin);
     printf("Digite o ano atual: ");
     scanf ("%d", &atual);  
     printf("Digite o ano de nascimento: ");
