@@ -4,7 +4,7 @@
 int main()
 {
     int num , i;
-    printf("Digite um numero: ");
+    printf("Digite apenas um numero: ");
     scanf("%d", &num);
     for (i = 0 ; i < num ; i++){
         if(i % 2 == 0){
