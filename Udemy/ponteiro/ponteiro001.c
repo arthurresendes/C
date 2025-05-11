@@ -21,13 +21,10 @@ int main()
 
     int *ponteiro;
 
-    // Recebendo a posicao da variavel b
 
     ponteiro = &b;
 
     printf("Valor de b: %d \n ", b);
-
-    //* O ponteiro pode ser lido como "Conteudo apontado para"
 
     *ponteiro = 30;
 
