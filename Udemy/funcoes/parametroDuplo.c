@@ -18,8 +18,6 @@ int main()
 
     printf("A soma eh %d " , resultadoSoma(a,b));
 
-    
-
 
     return 0;
 }
