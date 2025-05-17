@@ -1,30 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "funcoes.h"
+#include "proibicao.h"
 int main()
 {
     char nome[100], cpf[25];
     double salario, anual, reducao, imposto, medico;
     int filho;
 
-    do{
     printf("Digite seu nome : ");
-    fgets(nome, sizeof(nome), stdin);
-    }while(!ehSomenteLetras(nome) || strlen(nome) == 0);
+    lerTexto(nome, 100);
+    pularLinha();
 
-    getchar();
-
-    printf("Digite seu CPF : ");
-    scanf("%s", cpf);
+    printf("Digite seu CPF: ");
+    lerSomenteNumeros(cpf, 25); // CPF é string, lido com filtro de apenas números
+    pularLinha();
 
     printf("Digite seu salario: ");
-    scanf("%lf", &salario);
+    salario = lerDouble();
+    pularLinha();
 
     printf("Digite quantidade de filhos : ");
-    scanf("%d", &filho);
+    filho = lerInt();
+    pularLinha();
 
-    printf("Digite quando gastou na assistencia medica : ");
-    scanf("%lf", &medico);
+    printf("Digite quanto gastou na assistência médica : ");
+    medico = lerDouble();
+
+    limparTela();
 
     if (salario <= 5000)
     {
