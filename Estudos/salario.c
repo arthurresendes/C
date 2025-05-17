@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "funcoes.h"
 int main()
 {
     char nome[100], cpf[25];
     double salario, anual, reducao, imposto, medico;
     int filho;
 
+    do{
     printf("Digite seu nome : ");
-    scanf("%[^\n]", nome);
+    fgets(nome, sizeof(nome), stdin);
+    }while(!ehSomenteLetras(nome) || strlen(nome) == 0);
 
     getchar();
 
