@@ -34,11 +34,17 @@ int ehSomenteLetras(const char *str) {
 }
 
 int lerInteiroPositivo(const char *mensagem) {
-    char buffer[20];
+    char buffer[20];  // espaço para guardar o texto que o usuário digita
+
     do {
-        printf("%s", mensagem);
-        fgets(buffer, sizeof(buffer), stdin);
-        buffer[strcspn(buffer, "\n")] = '\0';
-    } while (strlen(buffer) == 0 || !ehNumeroInteiro(buffer));
-    return atoi(buffer);
+        printf("%s", mensagem);  // mostra a mensagem para o usuário
+
+        fgets(buffer, sizeof(buffer), stdin);  // lê a resposta do usuário
+        buffer[strcspn(buffer, "\n")] = '\0'; // tira o ENTER do final da resposta
+
+    } while (strlen(buffer) == 0 || !ehNumeroInteiro(buffer));  
+    // repete enquanto a resposta estiver vazia ou não for só números
+
+    return atoi(buffer);  // transforma a resposta de texto em número inteiro e retorna
 }
+
