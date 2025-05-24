@@ -2,51 +2,32 @@
 
 #include <math.h>
 
-int main()
+int main(){
 
-{
+    int n1 = 10;
+    char n2[4] = "Oi";
+    float n3 = 30.0;
+    printf("%d\n" , n1);
+    printf("%s\n" , n2);
+    printf("%f\n" , n3);
 
-    int n1 = 5;
+    int* p1;
+    char* p2;
+    float* p3;
 
-    char letra = 'a';
+    p1 = &n1;
+    p2 = n2; // já é o endereço do primeiro caractere
+    p3 = &n3;
 
-    float n2 = 10.00;
+    *p1 = 20;
+    p2 = "Ola";  // aponta para outra string constante
+    *p3 = 40.0;
 
-    printf("%d \n", n1);
+    printf("%d\n" , *p1);
+    printf("%s\n" , p2);
+    printf("%f\n" , *p3);
 
-    printf("%c \n", letra);
 
-    printf("%.2f \n\n", n2);
-
-    int *ponteiro;
-
-    char *ponteiro2;
-
-    float *ponteiro3;
-
-    ponteiro = &n1;
-
-    n1 = *ponteiro;
-
-    ponteiro2 = &letra;
-
-    letra = *ponteiro;
-
-    ponteiro3 = &n2;
-
-    n2 = *ponteiro3;
-
-    *ponteiro = 55;
-
-    *ponteiro2 = 'b';
-
-    *ponteiro3 = 55.55;
-
-    printf("%d \n", n1);
-
-    printf("%c \n", letra);
-
-    printf("%.2f", n2);
 
     return 0;
 }
