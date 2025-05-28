@@ -1,22 +1,18 @@
 #include <stdio.h>
 
-int main() {
-    char c;
-    FILE *arq;
+int main(){
+	FILE *arq;
+	char c;
 
-    // Corrigido o nome do arquivo
-    arq = fopen("arquivo01.txt", "r");
+	arq = fopen("arquivo.txt", "r"); //leitura
 
-    if (arq) {
-        while ((c = getc(arq)) != EOF) {
-            printf("%c", c);
-        }
-        fclose(arq);
-        printf("\n");
-    } else {
-        printf("Não achei o arquivo\n");
-    }
-
-    return 0;
+	if(arq){
+		while((c = getc(arq)) != EOF){ //EOF = End Of File //fim do arquivo
+			printf("%c", c);
+		}
+	}else{
+		printf("Não achei o arquivo");
+	}
+	fclose(arq);
+	return 0;
 }
-
