@@ -1,40 +1,29 @@
 
-
 #include <stdio.h>
 
 int main()
 {
-    FILE *arq1 , *arq2; //Criação de dois FILE(arquivos) que recebem um ponteiro
-    char caractere = 'A';
+    FILE *arq;
+    char nomeArquivo[12];
+    int contaLinhas = 0;
     
-    arq1 = fopen("arq.txt" , "wa"); //Abre o arquivo1 para writen
-    if(arq1){ //Se abrir o arquivo 1
-        while(caractere != '0'){ //Se o caractere for diferente de 0 ele volta ate o usuario digitar
-            printf("Informe um caractere ou 0 para sair: ");
-            scanf(" %c" , &caractere); //Espaço ignora o enter
-            
-            if(caractere != '0'){
-                fputc(caractere , arq1);
+    printf("Informe o nome do arquivo a ser aberto: ");
+    fgets(nomeArquivo , 12 , stdin);
+    
+    arq = fopen(nomeArquivo , "r");
+    
+    if(arq){
+        for(char c = getc(arq); c != EOF; c = getc(arq)){
+            if(c ==  '\n'){
+                contaLinhas++;
             }
         }
+        printf("O arquivo %s possui: %d linhas" , nomeArquivo  , contaLinhas);
     }else{
         printf("Não foi possivel criar o arquivo. ");
     }
     
-    fclose(arq1); //Fechamento de arquivo 
-    arq1 = NULL;
-    
-    arq2 = fopen("arq.txt" , "r");
-    if(arq2){
-        while(caractere = getc(arq2) != EOF){ //End of file
-            printf("%c\n" , caractere);
-        }
-    }else{
-        printf("Não foi possivel abrir o arquivo. ");
-    }
-    
-    fclose(arq2);
-    arq2 = NULL;
-
+    fclose(arq);
+    arq = NULL;
     return 0;
 }
