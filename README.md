@@ -1,3 +1,5 @@
 
  
-<h1>Meus estudos em C</h1>
+<h1>Todo meu aprendizado em C</h1>
+
+<p>Conhecimento em C e projetos </p>
