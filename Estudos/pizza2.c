@@ -1,134 +1,296 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <locale.h>
 
-void bordaMenu() {
-    printf("--------------------- \n");
-}
+#ifdef _WIN32
+#define LIMPAR_TELA "cls"
+#else
+#define LIMPAR_TELA "clear"
+#endif
 
-int ehNumeroInteiro(const char *str) {  
-    for (int i = 0; str[i] != '\0'; i++) { 
-        if (!isdigit(str[i])) return 0; 
-    }
-    return 1; 
-}
+#define MAX_ITENS 100
 
-int ehFloat(const char *str) {
-    int ponto = 0;
-    if (str[0] == '\0') return 0; 
-    for (int i = 0; str[i] != '\0'; i++) { 
-        if (str[i] == '.') {
-            if (ponto) return 0; 
-            ponto = 1;
-        } else if (!isdigit(str[i])) {
+typedef struct {
+    char nome[50];
+    float preco;
+} Item;
+
+typedef struct {
+    Item itens[MAX_ITENS];
+    int quantidade;
+} Carrinho;
+
+int ApenasNumeros(char *str);
+int ApenasLetras(char *str);
+int CampoVazio(char *str);
+void lerStringNaoVazia(char *mensagem, char *destino, int tamanho);
+void lerNumericoComTamanho(char *mensagem, char *destino, int tamanhoEsperado);
+void adicionarItem(Carrinho *carrinho, char *nome, float preco);
+void mostrarCarrinho(Carrinho carrinho);
+void menuAdicionarItens(Carrinho *carrinho, int opcao);
+
+int main(void) {
+    setlocale(LC_ALL, "");
+    int tipo = -1, numero = 0;
+    Carrinho carrinho = { .quantidade = 0 };
+    char nome[30], entrada[10], cardapio[10], cpf[12], cep[10], cidade[40],
+         logradouro[40], complemento[40];
+
+    system(LIMPAR_TELA);
+    printf("Bem-Vindo(a) à PizzaControl!\n");
+
+    while (tipo != 0 && tipo != 1) {
+        printf("\nEscolha o tipo do pedido:\n");
+        printf("(0) Pedido no restaurante\n");
+        printf("(1) Pedido para entrega\n");
+        printf("(S) Sair\n");
+        printf("Digite: ");
+        fgets(entrada, sizeof(entrada), stdin);
+        entrada[strcspn(entrada, "\n")] = '\0';
+
+        if (strcasecmp(entrada, "S") == 0) {
+            printf("Saindo do sistema. Até logo!\n");
             return 0;
         }
-    }
-    return 1;
-}
 
-int ehSomenteLetras(const char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (!isalpha(str[i]) && str[i] != ' ') {
-            return 0;
+        if (CampoVazio(entrada) || !ApenasNumeros(entrada)) {
+            printf("Digite apenas 0, 1 ou S.\n");
+            continue;
+        }
+
+        tipo = atoi(entrada);
+        if (tipo != 0 && tipo != 1) {
+            printf("Opção inválida! Digite 0 ou 1.\n");
         }
     }
-    return 1;
-}
 
-int lerInteiroPositivo(const char *mensagem) {
-    char buffer[20];
-    do {
-        printf("%s", mensagem);
-        fgets(buffer, sizeof(buffer), stdin);
-        buffer[strcspn(buffer, "\n")] = '\0';
-    } while (strlen(buffer) == 0 || !ehNumeroInteiro(buffer));
-    return atoi(buffer);
-}
-
-int main() {
-    int tipoPedido, confirmacao, cardapio, cep, numResidencia, querComplemento;
-    char nome[50], CPF[20], logadouro[100], cidade[20], complemento[30], buffer[50];
-
-    printf("Bem-vindo à PizzaControl! Estamos muito felizes de ter você aqui!! \n");
+    system(LIMPAR_TELA);
 
     do {
-        tipoPedido = lerInteiroPositivo(" \n 1 para comer no restaurante \n 2 para entrega \n 3 para sair \n Digite sua opção: ");
-    } while (tipoPedido < 1 || tipoPedido > 3);
+        lerStringNaoVazia("Digite seu nome: ", nome, sizeof(nome));
+        if (!ApenasLetras(nome)) {
+            printf("Digite apenas letras.\n");
+        }
+    } while (!ApenasLetras(nome));
 
-    if (tipoPedido == 1 || tipoPedido == 2) {
+    lerNumericoComTamanho("Digite seu CPF (apenas números): ", cpf, 11);
+
+    if (tipo == 1) {
+        lerNumericoComTamanho("Digite seu CEP: ", cep, 8);
+
         do {
-            do {
-                printf("\nDigite seu nome: ");
-                fgets(nome, sizeof(nome), stdin);
-                nome[strcspn(nome, "\n")] = '\0';
-            } while (!ehSomenteLetras(nome) || strlen(nome) == 0);
-
-            do {
-                printf("Digite seu CPF (somente números - 11 dígitos): ");
-                fgets(CPF, sizeof(CPF), stdin);
-                CPF[strcspn(CPF, "\n")] = '\0';
-                if (strlen(CPF) != 11 || !ehNumeroInteiro(CPF)) {
-                    printf("CPF inválido! Deve conter exatamente 11 números.\n");
-                }
-            } while (strlen(CPF) != 11 || !ehNumeroInteiro(CPF) || strlen(nome) == 0);
-
-            if (tipoPedido == 2) {
-                cep = lerInteiroPositivo("Digite seu CEP: ");
-
-                do {
-                    printf("Digite o nome da cidade: ");
-                    fgets(cidade, sizeof(cidade), stdin);
-                    cidade[strcspn(cidade, "\n")] = '\0';
-                } while (!ehSomenteLetras(cidade) || strlen(cidade) == 0 );
-
-                numResidencia = lerInteiroPositivo("Digite o número da residência: ");
-
-                do {
-                    printf("Digite o logradouro (nome da rua): ");
-                    fgets(logadouro, sizeof(logadouro), stdin);
-                    logadouro[strcspn(logadouro, "\n")] = '\0';
-                } while (!ehSomenteLetras(logadouro) || strlen(logadouro) == 0);
-
-                querComplemento = lerInteiroPositivo("Deseja complementar com algo? (1--Sim, 2--Não): ");
-                if (querComplemento == 1) {
-                    do {
-                        printf("Digite o complemento: ");
-                        fgets(complemento, sizeof(complemento), stdin);
-                        complemento[strcspn(complemento, "\n")] = '\0';
-                    } while (!ehSomenteLetras(complemento) || strlen(complemento) == 0);
-                }
+            lerStringNaoVazia("Digite sua Cidade: ", cidade, sizeof(cidade));
+            if (!ApenasLetras(cidade)) {
+                printf("Digite apenas letras.\n");
             }
+        } while (!ApenasLetras(cidade));
 
-            bordaMenu();
-            puts(nome);
-            puts(CPF);
-            if (tipoPedido == 2) {
-                printf("CEP: %d\n", cep);
-                puts(cidade);
-                printf("Número: %d\n", numResidencia);
-                puts(logadouro);
-                if (querComplemento == 1) puts(complemento);
+        do {
+            lerStringNaoVazia("Digite o Logradouro: ", logradouro, sizeof(logradouro));
+            if (!ApenasLetras(logradouro)) {
+                printf("Digite apenas letras.\n");
             }
-            bordaMenu();
+        } while (!ApenasLetras(logradouro));
 
-            confirmacao = lerInteiroPositivo("Confirma essas informações (1--Sim, 2--Não): ");
+        do {
+            printf("Número da Residência (1 a 99999): ");
+            if (scanf("%d", &numero) != 1 || numero <= 0 || numero > 99999) {
+                printf("Número inválido! Digite um número entre 1 e 99999.\n");
+                while (getchar() != '\n');
+                numero = 0;
+            } else {
+                while (getchar() != '\n');
+            }
+        } while (numero <= 0 || numero > 99999);
 
-        } while (confirmacao != 1);
-
-        printf("-----Cardápio------ \n");
-        bordaMenu();
-        printf("|(1)Pizza salgada| \n");
-        printf("|(2)Pizza doce| \n");
-        printf("|(3)Bebidas| \n");
-        printf("|(4)Sobremesas|\n");
-        bordaMenu();
-
-        cardapio = lerInteiroPositivo("Qual das opções a seguir você deseja: ");
-    } else {
-        printf("Obrigado por visitar a PizzaControl! Volte sempre. 🍕\n");
+        printf("Digite o Complemento (opcional): ");
+        fgets(complemento, sizeof(complemento), stdin);
+        complemento[strcspn(complemento, "\n")] = '\0';
     }
+
+    do {
+        printf("\nEscolha as opções do cardápio:\n");
+        printf("(1) Pizzas tradicionais\n");
+        printf("(2) Pizzas doces\n");
+        printf("(3) Bebidas\n");
+        printf("(4) Sobremesas\n");
+        printf("(5) Ver pedidos\n");
+        printf("(6) Finalizar pedido\n");
+        printf("(S) Sair\n");
+        printf("Digite: ");
+        fgets(cardapio, sizeof(cardapio), stdin);
+        cardapio[strcspn(cardapio, "\n")] = '\0';
+
+        if (strcasecmp(cardapio, "S") == 0) {
+            printf("Pedido cancelado. Saindo...\n");
+            return 0;
+        }
+
+        if (!CampoVazio(cardapio) && ApenasNumeros(cardapio)) {
+            int opcao = atoi(cardapio);
+            switch (opcao) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    menuAdicionarItens(&carrinho, opcao);
+                    break;
+                case 5:
+                    mostrarCarrinho(carrinho);
+                    break;
+                case 6:
+                    mostrarCarrinho(carrinho);
+                    printf("\nPedido finalizado! Obrigado por comprar conosco.\n");
+                    return 0;
+                default:
+                    printf("Opção inválida.\n");
+            }
+        } else {
+            printf("Entrada inválida. Digite um número de 1 a 6 ou S.\n");
+        }
+
+    } while (1);
 
     return 0;
+}
+
+void menuAdicionarItens(Carrinho *carrinho, int opcao) {
+    char entrada[10];
+    int escolha = 0;
+    
+    do {
+        printf("\nEscolha um item para adicionar ao carrinho:\n");
+        switch (opcao) {
+            case 1:
+                printf("(1) Calabresa - R$ 35.00\n");
+                printf("(2) Margherita - R$ 32.00\n");
+                break;
+            case 2:
+                printf("(1) Chocolate - R$ 30.00\n");
+                printf("(2) Banana com Canela - R$ 28.00\n");
+                break;
+            case 3:
+                printf("(1) Refrigerante - R$ 7.00\n");
+                printf("(2) Suco Natural - R$ 10.00\n");
+                break;
+            case 4:
+                printf("(1) Sorvete - R$ 12.00\n");
+                printf("(2) Pudim - R$ 8.00\n");
+                break;
+        }
+        printf("(0) Voltar\n");
+        printf("Digite: ");
+        
+        // Lê a entrada como string
+        fgets(entrada, sizeof(entrada), stdin);
+        entrada[strcspn(entrada, "\n")] = '\0'; // Remove o \n
+        
+        // Se o usuário apertar ENTER sem digitar nada, entrada será vazia
+        if (CampoVazio(entrada)) {
+            printf("Opção inválida! Digite um número.\n");
+            continue;
+        }
+        
+        // Se não for número, também inválido
+        if (!ApenasNumeros(entrada)) {
+            printf("Digite apenas números.\n");
+            continue;
+        }
+        
+        escolha = atoi(entrada);
+        
+        if (escolha == 0) break; // Voltar
+
+        switch (opcao) {
+            case 1:
+                if (escolha == 1) adicionarItem(carrinho, "Pizza Calabresa", 35.00);
+                else if (escolha == 2) adicionarItem(carrinho, "Pizza Margherita", 32.00);
+                else printf("Opção inválida! Tente novamente.\n");
+                break;
+            case 2:
+                if (escolha == 1) adicionarItem(carrinho, "Pizza Chocolate", 30.00);
+                else if (escolha == 2) adicionarItem(carrinho, "Pizza Banana", 28.00);
+                else printf("Opção inválida! Tente novamente.\n");
+                break;
+            case 3:
+                if (escolha == 1) adicionarItem(carrinho, "Refrigerante", 7.00);
+                else if (escolha == 2) adicionarItem(carrinho, "Suco Natural", 10.00);
+                else printf("Opção inválida! Tente novamente.\n");
+                break;
+            case 4:
+                if (escolha == 1) adicionarItem(carrinho, "Sorvete", 12.00);
+                else if (escolha == 2) adicionarItem(carrinho, "Pudim", 8.00);
+                else printf("Opção inválida! Tente novamente.\n");
+                break;
+        }
+    } while (1);
+}
+void adicionarItem(Carrinho *carrinho, char *nome, float preco) {
+    if (carrinho->quantidade >= MAX_ITENS) {
+        printf("Carrinho cheio!\n");
+        return;
+    }
+    strcpy(carrinho->itens[carrinho->quantidade].nome, nome);
+    carrinho->itens[carrinho->quantidade].preco = preco;
+    carrinho->quantidade++;
+    printf("'%s' adicionado ao carrinho!\n", nome);
+}
+
+void mostrarCarrinho(Carrinho carrinho) {
+    float total = 0.0;
+    if (carrinho.quantidade == 0) {
+        printf("\nCarrinho vazio.\n");
+        return;
+    }
+
+    printf("\n--- Itens no Carrinho ---\n");
+    for (int i = 0; i < carrinho.quantidade; i++) {
+        printf("%d. %s - R$ %.2f\n", i + 1, carrinho.itens[i].nome, carrinho.itens[i].preco);
+        total += carrinho.itens[i].preco;
+    }
+    printf("Total: R$ %.2f\n", total);
+}
+
+// Funções auxiliares de validação
+int ApenasNumeros(char *str) {
+    for (int i = 0; str[i] != '\0'; i++)
+        if (!isdigit((unsigned char)str[i])) return 0;
+    return 1;
+}
+
+int ApenasLetras(char *str) {
+    for (int i = 0; str[i] != '\0'; i++)
+        if (!isalpha((unsigned char)str[i]) && str[i] != ' ') return 0;
+    return 1;
+}
+
+int CampoVazio(char *str) {
+    for (int i = 0; str[i] != '\0'; i++)
+        if (!isspace((unsigned char)str[i])) return 0;
+    return 1;
+}
+
+void lerStringNaoVazia(char *mensagem, char *destino, int tamanho) {
+    do {
+        printf("%s", mensagem);
+        fgets(destino, tamanho, stdin);
+        destino[strcspn(destino, "\n")] = '\0';
+        if (CampoVazio(destino)) {
+            printf("Campo obrigatório! Não pode estar vazio.\n");
+        }
+    } while (CampoVazio(destino));
+}
+
+void lerNumericoComTamanho(char *mensagem, char *destino, int tamanhoEsperado) {
+    do {
+        printf("%s", mensagem);
+        fgets(destino, tamanhoEsperado + 2, stdin);
+        destino[strcspn(destino, "\n")] = '\0';
+
+        if (!ApenasNumeros(destino) || strlen(destino) != tamanhoEsperado) {
+            printf("Digite somente números, (%d dígitos).\n", tamanhoEsperado);
+        }
+    } while (!ApenasNumeros(destino) || strlen(destino) != tamanhoEsperado);
 }
