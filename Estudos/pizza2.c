@@ -1,296 +1,696 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include <locale.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdio.h>
 
+// Permite apenas números
+int apenasNumeros(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (!isdigit((unsigned char)str[i]))
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Permite apenas letras e espaços
+int apenasLetras(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (!isalpha((unsigned char)str[i]) && str[i] != ' ')
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Função para limpar buffer
+void limpaBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
+// Limpa tela (cls para Windows, clear para Linux/Mac)
+void limparTela()
+{
 #ifdef _WIN32
-#define LIMPAR_TELA "cls"
+    system("cls");
 #else
-#define LIMPAR_TELA "clear"
+    system("clear");
 #endif
+}
 
-#define MAX_ITENS 100
+int main()
+{
+    int menu, pedido, escolhaPizza, escolhaBebida, quantidadePizza, querBebida, querDoce, querSalgada, pagamento, quantidadeBebida, quantidadeDoce, escolhaDoce, cardapio, menuCardapio, algoMais;
+    char email[50];
+    char complemento[50];
+    char nomePizza[50];
+    char nomeBebida[50];
+    char nomeDoce[50];
+    char nomePagamento[50];
+    char senha[50];
+    char confirmas[50];
+    float precoPizza = 0.0, precoBebida = 0.0, precoDoce = 0.0, total = 0.0;
+    char menustr[50];
+    char querSalgadastr[3];
+    char escolhaPizzastr[6];
+    char cep[9], cpf[12];
+    char quantidadePizzaStr[10];
+    char algoMaisStr[10];
 
-typedef struct {
-    char nome[50];
-    float preco;
-} Item;
+    while (1)
+    {
+        do
+        {
+            printf("----------------- \n");
+            printf("| 1-Cadastro    | \n");
+            printf("| 2-Login       | \n");
+            printf("| 3-Cardapio    | \n");
+            printf("| 4-Sair        | \n");
+            printf("----------------- \n");
+            printf("Escolha uma opcao: ");
+            scanf("%49s", menustr);
+        } while (!apenasNumeros(menustr) || strlen(menustr) == 0);
+        menu = atoi(menustr);
 
-typedef struct {
-    Item itens[MAX_ITENS];
-    int quantidade;
-} Carrinho;
+        switch (menu)
+        {
+        case 1:
+            limparTela();
+            getchar(); // Limpa buffer antes do fgets
 
-int ApenasNumeros(char *str);
-int ApenasLetras(char *str);
-int CampoVazio(char *str);
-void lerStringNaoVazia(char *mensagem, char *destino, int tamanho);
-void lerNumericoComTamanho(char *mensagem, char *destino, int tamanhoEsperado);
-void adicionarItem(Carrinho *carrinho, char *nome, float preco);
-void mostrarCarrinho(Carrinho carrinho);
-void menuAdicionarItens(Carrinho *carrinho, int opcao);
+            // E-mail
+            do
+            {
+                printf("Digite seu e-mail: ");
+                fgets(email, sizeof(email), stdin);
+                email[strcspn(email, "\n")] = '\0';
+            } while (strlen(email) == 0 || !apenasLetras(email));
 
-int main(void) {
-    setlocale(LC_ALL, "");
-    int tipo = -1, numero = 0;
-    Carrinho carrinho = { .quantidade = 0 };
-    char nome[30], entrada[10], cardapio[10], cpf[12], cep[10], cidade[40],
-         logradouro[40], complemento[40];
+            // CPF
+            do
+            {
+                printf("Digite seu CPF (11 digitos): ");
+                fgets(cpf, sizeof(cpf), stdin);
+                cpf[strcspn(cpf, "\n")] = '\0';
+            } while (strlen(cpf) != 11 || !apenasNumeros(cpf));
 
-    system(LIMPAR_TELA);
-    printf("Bem-Vindo(a) à PizzaControl!\n");
+            getchar();
 
-    while (tipo != 0 && tipo != 1) {
-        printf("\nEscolha o tipo do pedido:\n");
-        printf("(0) Pedido no restaurante\n");
-        printf("(1) Pedido para entrega\n");
-        printf("(S) Sair\n");
-        printf("Digite: ");
-        fgets(entrada, sizeof(entrada), stdin);
-        entrada[strcspn(entrada, "\n")] = '\0';
+            // CEP
+            do
+            {
+                printf("Digite seu CEP (8 digitos sem traço): ");
+                fgets(cep, sizeof(cep), stdin);
+                cep[strcspn(cep, "\n")] = '\0';
+            } while (strlen(cep) != 8 || !apenasNumeros(cep));
 
-        if (strcasecmp(entrada, "S") == 0) {
-            printf("Saindo do sistema. Até logo!\n");
-            return 0;
-        }
+            getchar();
 
-        if (CampoVazio(entrada) || !ApenasNumeros(entrada)) {
-            printf("Digite apenas 0, 1 ou S.\n");
-            continue;
-        }
+            // Complemento
+            do
+            {
+                printf("Digite complemento do endereco(pontos populares):");
+                fgets(complemento, sizeof(complemento), stdin);
+                complemento[strcspn(complemento, "\n")] = '\0';
+            } while (strlen(complemento) == 0 || !apenasLetras(complemento));
 
-        tipo = atoi(entrada);
-        if (tipo != 0 && tipo != 1) {
-            printf("Opção inválida! Digite 0 ou 1.\n");
-        }
-    }
+            // Senha
+            do
+            {
+                printf("Digite sua senha: ");
+                fgets(senha, sizeof(senha), stdin);
+                senha[strcspn(senha, "\n")] = '\0';
+                getchar();
 
-    system(LIMPAR_TELA);
+                printf("Confirme sua senha: ");
+                fgets(confirmas, sizeof(confirmas), stdin);
+                confirmas[strcspn(confirmas, "\n")] = '\0';
+                getchar();
 
-    do {
-        lerStringNaoVazia("Digite seu nome: ", nome, sizeof(nome));
-        if (!ApenasLetras(nome)) {
-            printf("Digite apenas letras.\n");
-        }
-    } while (!ApenasLetras(nome));
+                if (strcmp(senha, confirmas) != 0 || strlen(senha) == 0 || strlen(confirmas) == 0)
+                {
+                    printf("Senhas diferentes ou um dos campos esta vazio. Tente novamente.\n\n");
+                }
+            } while (strcmp(senha, confirmas) != 0);
 
-    lerNumericoComTamanho("Digite seu CPF (apenas números): ", cpf, 11);
+            printf("Bem-vindo ao Pizza Control, %s\n", email);
 
-    if (tipo == 1) {
-        lerNumericoComTamanho("Digite seu CEP: ", cep, 8);
+            // Pizza salgada
+            do
+            {
+                printf("Deseja Pizza salgada? (1-Sim / 2-Nao): ");
+                scanf("%2s", querSalgadastr);
+                querSalgadastr[strcspn(querSalgadastr, "\n")] = '\0';
+                querSalgada = atoi(querSalgadastr);
+            } while (querSalgada < 1 || querSalgada > 2 || strlen(querSalgadastr) == 0 || !apenasNumeros(querSalgadastr));
+            getchar();
+            if (querSalgada == 1)
+            {
+                do
+                {
+                    printf("---------------------------- \n");
+                    printf("| 1-Frango catupiry--50 R$ | \n");
+                    printf("| 2-Calabresa--50 R$       | \n");
+                    printf("| 3-Mussarela--50 R$       | \n");
+                    printf("| 4-Quatro queijos--50 R$  | \n");
+                    printf("| 5-Portuguesa--50 R$      | \n");
+                    printf("---------------------------- \n");
+                    printf("Escolha sua pizza: ");
+                    scanf("%5s", escolhaPizzastr);
+                    escolhaPizzastr[strcspn(escolhaPizzastr, "\n")] = '\0';
+                    escolhaPizza = atoi(escolhaPizzastr);
+                    if (escolhaPizza < 1 || escolhaPizza > 5)
+                    {
+                        printf("Opcao inválida. Escolha novamente.\n");
+                    }
+                } while (escolhaPizza < 1 || escolhaPizza > 5 || strlen(escolhaPizzastr) == 0 || !apenasNumeros(escolhaPizzastr));
+                getchar();
 
-        do {
-            lerStringNaoVazia("Digite sua Cidade: ", cidade, sizeof(cidade));
-            if (!ApenasLetras(cidade)) {
-                printf("Digite apenas letras.\n");
-            }
-        } while (!ApenasLetras(cidade));
-
-        do {
-            lerStringNaoVazia("Digite o Logradouro: ", logradouro, sizeof(logradouro));
-            if (!ApenasLetras(logradouro)) {
-                printf("Digite apenas letras.\n");
-            }
-        } while (!ApenasLetras(logradouro));
-
-        do {
-            printf("Número da Residência (1 a 99999): ");
-            if (scanf("%d", &numero) != 1 || numero <= 0 || numero > 99999) {
-                printf("Número inválido! Digite um número entre 1 e 99999.\n");
-                while (getchar() != '\n');
-                numero = 0;
-            } else {
-                while (getchar() != '\n');
-            }
-        } while (numero <= 0 || numero > 99999);
-
-        printf("Digite o Complemento (opcional): ");
-        fgets(complemento, sizeof(complemento), stdin);
-        complemento[strcspn(complemento, "\n")] = '\0';
-    }
-
-    do {
-        printf("\nEscolha as opções do cardápio:\n");
-        printf("(1) Pizzas tradicionais\n");
-        printf("(2) Pizzas doces\n");
-        printf("(3) Bebidas\n");
-        printf("(4) Sobremesas\n");
-        printf("(5) Ver pedidos\n");
-        printf("(6) Finalizar pedido\n");
-        printf("(S) Sair\n");
-        printf("Digite: ");
-        fgets(cardapio, sizeof(cardapio), stdin);
-        cardapio[strcspn(cardapio, "\n")] = '\0';
-
-        if (strcasecmp(cardapio, "S") == 0) {
-            printf("Pedido cancelado. Saindo...\n");
-            return 0;
-        }
-
-        if (!CampoVazio(cardapio) && ApenasNumeros(cardapio)) {
-            int opcao = atoi(cardapio);
-            switch (opcao) {
+                switch (escolhaPizza)
+                {
                 case 1:
+                    strcpy(nomePizza, "Frango com catupiry");
+                    break;
                 case 2:
+                    strcpy(nomePizza, "Calabresa");
+                    break;
                 case 3:
+                    strcpy(nomePizza, "Mussarela");
+                    break;
                 case 4:
-                    menuAdicionarItens(&carrinho, opcao);
+                    strcpy(nomePizza, "Quatro queijos");
                     break;
                 case 5:
-                    mostrarCarrinho(carrinho);
+                    strcpy(nomePizza, "Portuguesa");
                     break;
-                case 6:
-                    mostrarCarrinho(carrinho);
-                    printf("\nPedido finalizado! Obrigado por comprar conosco.\n");
-                    return 0;
-                default:
-                    printf("Opção inválida.\n");
-            }
-        } else {
-            printf("Entrada inválida. Digite um número de 1 a 6 ou S.\n");
-        }
+                }
 
-    } while (1);
+                do
+                {
+                    printf("Quantas pizzas voce deseja? ");
+                    fgets(quantidadePizzaStr, sizeof(quantidadePizzaStr), stdin);
+                    quantidadePizzaStr[strcspn(quantidadePizzaStr, "\n")] = '\0'; // remove o '\n'
+
+                } while (strlen(quantidadePizzaStr) == 0 || !apenasNumeros(quantidadePizzaStr));
+
+                quantidadePizza = atoi(quantidadePizzaStr);
+
+                precoPizza = 50.0 * quantidadePizza;
+            }
+            else
+            {
+                printf("Sem pizza salgada!\n");
+                precoPizza = 0.0;
+                quantidadePizza = 0;
+            }
+
+            do
+            {
+                printf("Deseja mais alguma pizza ? (1-Sim 2-Não) ");
+                fgets(algoMaisStr, sizeof(algoMaisStr), stdin);
+                algoMaisStr[strcspn(algoMaisStr, "\n")] = '\0'; // remove o '\n'
+                algoMais = atoi(algoMaisStr);
+            } while (algoMais > 2 || algoMais < 1 || strlen(algoMaisStr) == 0 || !apenasNumeros(algoMaisStr));
+
+            printf("Deseja bebida? (1-Sim / 2-Nao): ");
+            scanf("%d", &querBebida);
+            getchar(); // limpa buffer
+
+            if (querBebida == 1)
+            {
+                do
+                {
+                    printf("----------------------------- \n");
+                    printf("| 1-Coca-Cola--12 R$        | \n");
+                    printf("| 2-Guarana--11 R$          | \n");
+                    printf("| 3-Suco de laranja--10 R$  | \n");
+                    printf("| 4-Agua--8 R$              | \n");
+                    printf("----------------------------- \n");
+                    printf("Escolha sua bebida: ");
+                    scanf("%d", &escolhaBebida);
+
+                    if (escolhaBebida < 1 || escolhaBebida > 4)
+                    {
+                        printf("Opcao invalida. Escolha novamente.\n");
+                    }
+                } while (escolhaBebida < 1 || escolhaBebida > 4);
+
+                switch (escolhaBebida)
+                {
+                case 1:
+                    strcpy(nomeBebida, "Coca-Cola");
+                    precoBebida = 12.0;
+                    break;
+                case 2:
+                    strcpy(nomeBebida, "Guarana");
+                    precoBebida = 11.0;
+                    break;
+                case 3:
+                    strcpy(nomeBebida, "Suco de laranja");
+                    precoBebida = 10.0;
+                    break;
+                case 4:
+                    strcpy(nomeBebida, "Agua");
+                    precoBebida = 8.0;
+                    break;
+                }
+                printf("Quantas bebidas voce deseja? ");
+                scanf("%d", &quantidadeBebida);
+                precoBebida = precoBebida * quantidadeBebida;
+            }
+            else
+            {
+                printf("Sem bebida!\n");
+                precoBebida = 0.0;
+                quantidadeBebida = 0;
+            }
+
+            // Pizza doce
+            printf("Deseja Pizza doce? (1-Sim / 2-Nao): ");
+            scanf("%d", &querDoce);
+
+            if (querDoce == 1)
+            {
+                do
+                {
+                    printf("----------------------------- \n");
+                    printf("| 1-Chocolate--50 R$        | \n");
+                    printf("| 2-Prestigio--55 R$        |\n");
+                    printf("| 3-RomeuJulieta--55 R$     | \n");
+                    printf("| 4-Brigadeiro--50 R$       |\n");
+                    printf("----------------------------- \n");
+                    printf("Escolha sua pizza doce: ");
+                    scanf("%d", &escolhaDoce);
+
+                    if (escolhaDoce < 1 || escolhaDoce > 4)
+                    {
+                        printf("Opcao invalida. Escolha novamente.\n");
+                    }
+                } while (escolhaDoce < 1 || escolhaDoce > 4);
+
+                switch (escolhaDoce)
+                {
+                case 1:
+                    strcpy(nomeDoce, "Chocolate");
+                    precoDoce = 50.0;
+                    break;
+                case 2:
+                    strcpy(nomeDoce, "Prestigio");
+                    precoDoce = 55.0;
+                    break;
+                case 3:
+                    strcpy(nomeDoce, "RomeuJulieta");
+                    precoDoce = 55.0;
+                    break;
+                case 4:
+                    strcpy(nomeDoce, "Brigadeiro");
+                    precoDoce = 50.0;
+                    break;
+                }
+                printf("Quantas pizza doce voce deseja? ");
+                scanf("%d", &quantidadeDoce);
+                precoDoce = precoDoce * quantidadeDoce;
+            }
+            else
+            {
+                printf("Sem Pizza doce!\n");
+                precoDoce = 0.0;
+                quantidadeDoce = 0;
+            }
+
+            if (querSalgada == 2 && querBebida == 2 && querDoce == 2)
+            {
+                printf("Nenhum pedido registrado \n");
+                return 0;
+            }
+
+            // Pagamento
+            do
+            {
+                printf("Metodo de pagamento\n");
+                printf("---------------- \n");
+                printf("| 1--Credito   | \n");
+                printf("| 2--Debito    | \n");
+                printf("| 3--PIX       | \n");
+                printf("| 4--Dinheiro  | \n");
+                printf("---------------- \n");
+                scanf("%d", &pagamento);
+
+                if (pagamento < 1 || pagamento > 4)
+                {
+                    printf("Opcao invalida. Escolha novamente \n");
+                }
+            } while (pagamento < 1 || pagamento > 4);
+
+            switch (pagamento)
+            {
+            case 1:
+                strcpy(nomePagamento, "Credito");
+                break;
+            case 2:
+                strcpy(nomePagamento, "Debito");
+                break;
+            case 3:
+                strcpy(nomePagamento, "PIX");
+                break;
+            case 4:
+                strcpy(nomePagamento, "Dinheiro");
+                break;
+            }
+
+            printf("\n--- RESUMO DO PEDIDO ---\n");
+            printf("Email: %s\n", email);
+            printf("CEP: %s\n", cep);
+            if (querSalgada == 1)
+            {
+                printf("Pizza salgada escolhida: %d %s , preco = %.2f\n", quantidadePizza, nomePizza, precoPizza);
+            }
+            else
+            {
+                printf("Sem pizza salgada , preco = %.2f \n", precoPizza = 0.0);
+            }
+            if (querBebida == 1)
+            {
+                printf("Bebida escolhida: %d %s , preco = %.2f\n", quantidadeBebida, nomeBebida, precoBebida);
+            }
+            else
+            {
+                printf("Sem bebida , preco = %.2f.\n", precoBebida = 0.0);
+            }
+            if (querDoce == 1)
+            {
+                printf("Pizza doce escolhida: %d %s , preco = %.2f\n", quantidadeDoce, nomeDoce, precoDoce);
+            }
+            else
+            {
+                printf("Sem pizza doce ,preco = %.2f.\n", precoDoce = 0.0);
+            }
+            total = precoPizza + precoBebida + precoDoce;
+            printf("Total do pedido: %.2f\n", total);
+            printf("Metodo de pagamento: %s\n", nomePagamento);
+            printf("------------------------\n");
+            break;
+
+        case 2:
+            getchar(); // Limpa o buffer para ler corretamente o email
+            do
+            {
+                printf("Digite seu e-mail: ");
+                fgets(email, sizeof(email), stdin);
+                email[strcspn(email, "\n")] = '\0';
+            } while (strlen(email) == 0);
+
+            do
+            {
+                printf("Digite sua senha: ");
+                scanf("%49s", senha);
+            } while (strlen(senha) == 0);
+
+            printf("Bom ter voce de volta a PizzaControl , %s\n", email);
+            do
+            {
+                printf("Deseja Pizza salgada? (1-Sim / 2-Nao): ");
+                scanf("%2s", querSalgadastr);
+                querSalgadastr[strcspn(querSalgadastr, "\n")] = '\0';
+                querSalgada = atoi(querSalgadastr);
+            } while (querSalgada < 1 || querSalgada > 2 || strlen(querSalgadastr) == 0 || !apenasNumeros(querSalgadastr));
+            if (querSalgada == 1)
+            {
+                do
+                {
+                    printf("---------------------------- \n");
+                    printf("| 1-Frango catupiry--50 R$ | \n");
+                    printf("| 2-Calabresa--50 R$       | \n");
+                    printf("| 3-Mussarela--50 R$       | \n");
+                    printf("| 4-Quatro queijos--50 R$  | \n");
+                    printf("| 5-Portuguesa--50 R$      | \n");
+                    printf("---------------------------- \n");
+                    printf("Escolha sua pizza: ");
+                    scanf("%5s", escolhaPizzastr);
+                    escolhaPizzastr[strcspn(escolhaPizzastr, "\n")] = '\0';
+                    escolhaPizza = atoi(escolhaPizzastr);
+                    if (escolhaPizza < 1 || escolhaPizza > 5)
+                    {
+                        printf("Opcao inválida. Escolha novamente.\n");
+                    }
+                } while (escolhaPizza < 1 || escolhaPizza > 5 || strlen(escolhaPizzastr) == 0 || !apenasNumeros(escolhaPizzastr));
+
+                switch (escolhaPizza)
+                {
+                case 1:
+                    strcpy(nomePizza, "Frango com catupiry");
+                    break;
+                case 2:
+                    strcpy(nomePizza, "Calabresa");
+                    break;
+                case 3:
+                    strcpy(nomePizza, "Mussarela");
+                    break;
+                case 4:
+                    strcpy(nomePizza, "Quatro queijos");
+                    break;
+                case 5:
+                    strcpy(nomePizza, "Portuguesa");
+                    break;
+                }
+                printf("Quantas pizzas voce deseja? ");
+                scanf("%d", &quantidadePizza);
+
+                precoPizza = 50.0 * quantidadePizza;
+            }
+            else
+            {
+                printf("Sem Pizza salgada!\n");
+                precoPizza = 0.0;
+                quantidadePizza = 0;
+            }
+
+            printf("Deseja bebida? (1-Sim / 2-Nao): ");
+            scanf("%d", &querBebida);
+            getchar();
+
+            if (querBebida == 1)
+            {
+                do
+                {
+                    printf("----------------------------- \n");
+                    printf("| 1-Coca-Cola--12 R$        | \n");
+                    printf("| 2-Guarana--11 R$          | \n");
+                    printf("| 3-Suco de laranja--10 R$  | \n");
+                    printf("| 4-Agua--8 R$              | \n");
+                    printf("----------------------------- \n");
+                    printf("Escolha sua bebida: ");
+                    scanf("%d", &escolhaBebida);
+
+                    if (escolhaBebida < 1 || escolhaBebida > 4)
+                    {
+                        printf("Opcao invalida. Escolha novamente.\n");
+                    }
+                } while (escolhaBebida < 1 || escolhaBebida > 4);
+
+                switch (escolhaBebida)
+                {
+                case 1:
+                    strcpy(nomeBebida, "Coca-Cola");
+                    precoBebida = 12.0;
+                    break;
+                case 2:
+                    strcpy(nomeBebida, "Guarana");
+                    precoBebida = 11.0;
+                    break;
+                case 3:
+                    strcpy(nomeBebida, "Suco de laranja");
+                    precoBebida = 10.0;
+                    break;
+                case 4:
+                    strcpy(nomeBebida, "Agua");
+                    precoBebida = 8.0;
+                    break;
+                }
+
+                printf("Quantas bebidas voce deseja? ");
+                scanf("%d", &quantidadeBebida);
+
+                precoBebida = precoBebida * quantidadeBebida;
+            }
+            else
+            {
+                printf("Sem bebida!\n");
+                precoBebida = 0.0;
+                quantidadeBebida = 0;
+            }
+
+            printf("Deseja Pizza doce? (1-Sim / 2-Nao): ");
+            scanf("%d", &querDoce);
+
+            if (querDoce == 1)
+            {
+                do
+                {
+                    printf("----------------------------- \n");
+                    printf("| 1-Chocolate--50 R$        | \n");
+                    printf("| 2-Prestigio--55 R$        |\n");
+                    printf("| 3-RomeuJulieta--55 R$     | \n");
+                    printf("| 4-Brigadeiro--50 R$       |\n");
+                    printf("----------------------------- \n");
+                    printf("Escolha sua pizza doce: ");
+                    scanf("%d", &escolhaDoce);
+
+                    if (escolhaDoce < 1 || escolhaDoce > 4)
+                    {
+                        printf("Opcao invalida. Escolha novamente.\n");
+                    }
+                } while (escolhaDoce < 1 || escolhaDoce > 4);
+
+                switch (escolhaDoce)
+                {
+                case 1:
+                    strcpy(nomeDoce, "Chocolate");
+                    precoDoce = 50.0;
+                    break;
+                case 2:
+                    strcpy(nomeDoce, "Prestigio");
+                    precoDoce = 55.0;
+                    break;
+                case 3:
+                    strcpy(nomeDoce, "RomeuJulieta");
+                    precoDoce = 55.0;
+                    break;
+                case 4:
+                    strcpy(nomeDoce, "Brigadeiro");
+                    precoDoce = 50.0;
+                    break;
+                }
+                printf("Quantas pizza doce voce deseja? ");
+                scanf("%d", &quantidadeDoce);
+
+                precoDoce = precoDoce * quantidadeDoce;
+            }
+            else
+            {
+                printf("Sem Pizza doce!\n");
+                precoDoce = 0.0;
+                quantidadeDoce = 0;
+            }
+
+            if (querSalgada == 2 && querBebida == 2 && querDoce == 2)
+            {
+                printf("Nenhum pedido registrado \n");
+                return 0;
+            }
+
+            do
+            {
+                printf("Metodo de pagamento\n");
+                printf("---------------- \n");
+                printf("| 1--Credito   | \n");
+                printf("| 2--Debito    | \n");
+                printf("| 3--PIX       | \n");
+                printf("| 4--Dinheiro  | \n");
+                printf("---------------- \n");
+                scanf("%d", &pagamento);
+
+                if (pagamento < 1 || pagamento > 4)
+                {
+                    printf("Opcao invalida. Escolha novamente \n");
+                }
+            } while (pagamento < 1 || pagamento > 4);
+
+            switch (pagamento)
+            {
+            case 1:
+                strcpy(nomePagamento, "Credito");
+                break;
+            case 2:
+                strcpy(nomePagamento, "Debito");
+                break;
+            case 3:
+                strcpy(nomePagamento, "PIX");
+                break;
+            case 4:
+                strcpy(nomePagamento, "Dinheiro");
+                break;
+            }
+
+            printf("\n--- RESUMO DO PEDIDO ---\n");
+            printf("Email: %s\n", email);
+            if (querSalgada == 1)
+            {
+                printf("Pizza salgada escolhida: %d %s , preco = %.2f\n", quantidadePizza, nomePizza, precoPizza);
+            }
+            else
+            {
+                printf("Sem pizza salgada , preco = %.2f \n", precoPizza = 0.0);
+            }
+            if (querBebida == 1)
+            {
+                printf("Bebida escolhida: %d %s , preco = %.2f\n", quantidadeBebida, nomeBebida, precoBebida);
+            }
+            else
+            {
+                printf("Sem bebida , preco = %.2f.\n", precoBebida = 0.0);
+            }
+            if (querDoce == 1)
+            {
+                printf("Pizza doce escolhida: %d %s , preco = %.2f\n", quantidadeDoce, nomeDoce, precoDoce);
+            }
+            else
+            {
+                printf("Sem pizza doce ,preco = %.2f.\n", precoDoce = 0.0);
+            }
+            total = precoPizza + precoBebida + precoDoce;
+            printf("Total do pedido: %.2f\n", total);
+            printf("Metodo de pagamento: %s\n", nomePagamento);
+            printf("------------------------\n");
+            break;
+
+        case 3:
+            printf("Pizza salgada: \n");
+            printf("---------------------------- \n");
+            printf("| 1-Frango catupiry--50 R$ | \n");
+            printf("| 2-Calabresa--50 R$       | \n");
+            printf("| 3-Mussarela--50 R$       | \n");
+            printf("| 4-Quatro queijos--50 R$  | \n");
+            printf("| 5-Portuguesa--50 R$      | \n");
+            printf("---------------------------- \n");
+            printf("Pizza doce: \n");
+            printf("----------------------------- \n");
+            printf("| 1-Chocolate--50 R$        | \n");
+            printf("| 2-Prestigio--55 R$        |\n");
+            printf("| 3-RomeuJulieta--55 R$     | \n");
+            printf("| 4-Brigadeiro--50 R$       |\n");
+            printf("----------------------------- \n");
+            printf("Bebidas: \n");
+            printf("----------------------------- \n");
+            printf("| 1-Coca-Cola--12 R$        | \n");
+            printf("| 2-Guarana--11 R$          | \n");
+            printf("| 3-Suco de laranja--10 R$  | \n");
+            printf("| 4-Agua--8 R$              | \n");
+            printf("----------------------------- \n");
+            printf("Esse e nosso cardapio, se quiser fazer o pedido faca login ou se cadastre-se.(1-Menu para pedido / 2-Sair) \n");
+            scanf("%d", &menu);
+            if (menu != 1)
+            {
+                printf("Obrigado por visitar a PizzaControl \n");
+                return 0;
+            }
+            break;
+        case 4:
+            printf("Obrigado por visitar a PizzaControl \n");
+            return 0;
+        default:
+            printf("Opção inválida.\n");
+        }
+    }
 
     return 0;
-}
-
-void menuAdicionarItens(Carrinho *carrinho, int opcao) {
-    char entrada[10];
-    int escolha = 0;
-    
-    do {
-        printf("\nEscolha um item para adicionar ao carrinho:\n");
-        switch (opcao) {
-            case 1:
-                printf("(1) Calabresa - R$ 35.00\n");
-                printf("(2) Margherita - R$ 32.00\n");
-                break;
-            case 2:
-                printf("(1) Chocolate - R$ 30.00\n");
-                printf("(2) Banana com Canela - R$ 28.00\n");
-                break;
-            case 3:
-                printf("(1) Refrigerante - R$ 7.00\n");
-                printf("(2) Suco Natural - R$ 10.00\n");
-                break;
-            case 4:
-                printf("(1) Sorvete - R$ 12.00\n");
-                printf("(2) Pudim - R$ 8.00\n");
-                break;
-        }
-        printf("(0) Voltar\n");
-        printf("Digite: ");
-        
-        // Lê a entrada como string
-        fgets(entrada, sizeof(entrada), stdin);
-        entrada[strcspn(entrada, "\n")] = '\0'; // Remove o \n
-        
-        // Se o usuário apertar ENTER sem digitar nada, entrada será vazia
-        if (CampoVazio(entrada)) {
-            printf("Opção inválida! Digite um número.\n");
-            continue;
-        }
-        
-        // Se não for número, também inválido
-        if (!ApenasNumeros(entrada)) {
-            printf("Digite apenas números.\n");
-            continue;
-        }
-        
-        escolha = atoi(entrada);
-        
-        if (escolha == 0) break; // Voltar
-
-        switch (opcao) {
-            case 1:
-                if (escolha == 1) adicionarItem(carrinho, "Pizza Calabresa", 35.00);
-                else if (escolha == 2) adicionarItem(carrinho, "Pizza Margherita", 32.00);
-                else printf("Opção inválida! Tente novamente.\n");
-                break;
-            case 2:
-                if (escolha == 1) adicionarItem(carrinho, "Pizza Chocolate", 30.00);
-                else if (escolha == 2) adicionarItem(carrinho, "Pizza Banana", 28.00);
-                else printf("Opção inválida! Tente novamente.\n");
-                break;
-            case 3:
-                if (escolha == 1) adicionarItem(carrinho, "Refrigerante", 7.00);
-                else if (escolha == 2) adicionarItem(carrinho, "Suco Natural", 10.00);
-                else printf("Opção inválida! Tente novamente.\n");
-                break;
-            case 4:
-                if (escolha == 1) adicionarItem(carrinho, "Sorvete", 12.00);
-                else if (escolha == 2) adicionarItem(carrinho, "Pudim", 8.00);
-                else printf("Opção inválida! Tente novamente.\n");
-                break;
-        }
-    } while (1);
-}
-void adicionarItem(Carrinho *carrinho, char *nome, float preco) {
-    if (carrinho->quantidade >= MAX_ITENS) {
-        printf("Carrinho cheio!\n");
-        return;
-    }
-    strcpy(carrinho->itens[carrinho->quantidade].nome, nome);
-    carrinho->itens[carrinho->quantidade].preco = preco;
-    carrinho->quantidade++;
-    printf("'%s' adicionado ao carrinho!\n", nome);
-}
-
-void mostrarCarrinho(Carrinho carrinho) {
-    float total = 0.0;
-    if (carrinho.quantidade == 0) {
-        printf("\nCarrinho vazio.\n");
-        return;
-    }
-
-    printf("\n--- Itens no Carrinho ---\n");
-    for (int i = 0; i < carrinho.quantidade; i++) {
-        printf("%d. %s - R$ %.2f\n", i + 1, carrinho.itens[i].nome, carrinho.itens[i].preco);
-        total += carrinho.itens[i].preco;
-    }
-    printf("Total: R$ %.2f\n", total);
-}
-
-// Funções auxiliares de validação
-int ApenasNumeros(char *str) {
-    for (int i = 0; str[i] != '\0'; i++)
-        if (!isdigit((unsigned char)str[i])) return 0;
-    return 1;
-}
-
-int ApenasLetras(char *str) {
-    for (int i = 0; str[i] != '\0'; i++)
-        if (!isalpha((unsigned char)str[i]) && str[i] != ' ') return 0;
-    return 1;
-}
-
-int CampoVazio(char *str) {
-    for (int i = 0; str[i] != '\0'; i++)
-        if (!isspace((unsigned char)str[i])) return 0;
-    return 1;
-}
-
-void lerStringNaoVazia(char *mensagem, char *destino, int tamanho) {
-    do {
-        printf("%s", mensagem);
-        fgets(destino, tamanho, stdin);
-        destino[strcspn(destino, "\n")] = '\0';
-        if (CampoVazio(destino)) {
-            printf("Campo obrigatório! Não pode estar vazio.\n");
-        }
-    } while (CampoVazio(destino));
-}
-
-void lerNumericoComTamanho(char *mensagem, char *destino, int tamanhoEsperado) {
-    do {
-        printf("%s", mensagem);
-        fgets(destino, tamanhoEsperado + 2, stdin);
-        destino[strcspn(destino, "\n")] = '\0';
-
-        if (!ApenasNumeros(destino) || strlen(destino) != tamanhoEsperado) {
-            printf("Digite somente números, (%d dígitos).\n", tamanhoEsperado);
-        }
-    } while (!ApenasNumeros(destino) || strlen(destino) != tamanhoEsperado);
 }
