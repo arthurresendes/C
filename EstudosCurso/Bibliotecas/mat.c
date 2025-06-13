@@ -9,6 +9,10 @@
 
 //exp(exponencial) , log(log normal) e log10(log com base 10)
 
+//Funcao de potencia 
+
+//pow(retorna base elevado ao expoente)
+
 int main(){
     printf("Hello world!!");
     return 0;
