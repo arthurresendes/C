@@ -12,6 +12,7 @@
 //Funcao de potencia 
 
 //pow(retorna base elevado ao expoente)
+//sqrt(raiz quadrada)
 
 int main(){
     printf("Hello world!!");
