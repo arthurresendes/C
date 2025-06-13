@@ -7,7 +7,7 @@
 
 //Funcoes exponenciais e logaritmica
 
-//
+//exp(exponencial)
 
 int main(){
     printf("Hello world!!");
