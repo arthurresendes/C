@@ -7,7 +7,7 @@
 
 //Funcoes exponenciais e logaritmica
 
-//exp(exponencial)
+//exp(exponencial) , log(log normal) e log10(log com base 10)
 
 int main(){
     printf("Hello world!!");
