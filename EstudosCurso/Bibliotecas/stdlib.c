@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-//atof(converte string para double) , atoi(converte string para inteiro) ,atoll(converte string para usgned long long), rand(gera numero aleatorio) , srand(inicializa numero aleatorio)
+//atof(converte string para double) , atoi(converte string para inteiro) ,atoll(converte string para usgned long long), rand(gera numero aleatorio) , srand(inicializa numero aleatorio), malloc , realloc , calloc , free, qsort(ordena os elementos de um array) , abs() , div(divisao inteira , volta o quiocente)
 
 int main(){
     
