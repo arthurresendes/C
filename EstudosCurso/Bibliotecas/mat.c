@@ -14,6 +14,10 @@
 //pow(retorna base elevado ao expoente)
 //sqrt(raiz quadrada)
 
+//Funcoes de arredondamento valor absoluto entre outros
+
+//ceil(arredonda para cima), floor(arredonda para baixo)
+
 int main(){
     printf("Hello world!!");
     return 0;
