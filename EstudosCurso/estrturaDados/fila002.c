@@ -41,7 +41,7 @@ void verFila(){
 }
 
 void quantidadesPacientes(){
-    printf("Quantidade de pacientes na fila: %d\n", tail - head);
+    printf("Quantidade de pacientes na fila: %d\n", tail);
 }
 
 void limparFila(){
