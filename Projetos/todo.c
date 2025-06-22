@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_TODOS 10
+#define MAX_TODOS 100
 #define TAM_TEXTO 200
 
 char todos[MAX_TODOS][TAM_TEXTO];
@@ -50,8 +50,8 @@ void remover() {
         return;
     }
 
-    for (int i = indice - 1; i < total - 1; i++) {
-        strcpy(todos[i], todos[i + 1]);
+    for(int i = indice - 1; i < total - 1; i++ ){
+        strcpy(todos[i] , todos[i+1]);
     }
     total--;
     printf("To-do removido com sucesso!\n");
