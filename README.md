@@ -13,22 +13,58 @@ Aqui você encontra meus projetos, exercícios e resumos dos principais conceito
 
 ## :rocket: Índice
 
-- [📚 Bibliotecas](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Bibliotecas)
-- [🔖 Diretivas](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Diretivas)
-- [🚫 Proibições](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Proibi%C3%A7%C3%B5es)
-- [🔁 Recursividade](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Recursividade)
-- [💾 Alocação Dinâmica](https://github.com/arthurresendes/C/tree/main/EstudosCurso/aloca%C3%A7%C3%A3o-dinamica)
-- [🔀 Constante](https://github.com/arthurresendes/C/tree/main/EstudosCurso/constantes)
-- [🔀 Define](https://github.com/arthurresendes/C/tree/main/EstudosCurso/define)
-- [⌨️ Entrada e Saída](https://github.com/arthurresendes/C/tree/main/EstudosCurso/entradaSaida)
-- [📊 Estrutura de Dados](https://github.com/arthurresendes/C/tree/main/EstudosCurso/estrturaDados)
-- [🧩 Funções](https://github.com/arthurresendes/C/tree/main/EstudosCurso/funcoes)
-- [🔃 Condicionais](https://github.com/arthurresendes/C/tree/main/EstudosCurso/condicional)
-- [🔃 If e Else](https://github.com/arthurresendes/C/tree/main/EstudosCurso/if)
-- [🔄 Loops (for, while, do-while)](https://github.com/arthurresendes/C/tree/main/EstudosCurso/loop)
-- [🟦 Matriz](https://github.com/arthurresendes/C/tree/main/EstudosCurso/matriz)
-- [📑 Ordenação de Vetores](https://github.com/arthurresendes/C/tree/main/EstudosCurso/ordena%C3%A7%C3%A3oVetores)
-- [🧭 Ponteiros](https://github.com/arthurresendes/C/tree/main/EstudosCurso/ponteiro)
-- [🏗️ Struct](https://github.com/arthurresendes/C/tree/main/EstudosCurso/structs)
-- [📦 Vetores](https://github.com/arthurresendes/C/tree/main/EstudosCurso/vetores)
+--📚 [Bibliotecas](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Bibliotecas)
+Exploração das principais bibliotecas da linguagem C, como `stdio.h`, `stdlib.h`, `string.h`, entre outras, essenciais para manipulação de dados, entrada e saída, alocação de memória e controle de processos.
+
+--🔖 [Diretivas](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Diretivas)
+Comandos iniciados por `#`, como `#include` e `#define`, que controlam o comportamento do pré-processador C antes da compilação.
+
+--🚫 [Proibições](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Proibi%C3%A7%C3%B5es)
+Boas práticas e cuidados na linguagem, como evitar uso incorreto de ponteiros, memória não liberada, estouros de buffer, entre outros.
+
+--🔁 [Recursividade](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Recursividade)
+Funções que se chamam dentro delas mesmas. Utilizadas para resolver problemas como fatorial, Fibonacci, torres de Hanoi, entre outros.
+
+--💾 [Alocação Dinâmica](https://github.com/arthurresendes/C/tree/main/EstudosCurso/aloca%C3%A7%C3%A3o-dinamica)
+Manipulação de memória em tempo de execução com `malloc`, `calloc`, `realloc` e `free`. Essencial para estruturas de dados como listas, pilhas e filas.
+
+--🔀 [Constante](https://github.com/arthurresendes/C/tree/main/EstudosCurso/constantes)
+Uso da palavra-chave `const` para proteger valores que não devem ser alterados após inicialização.
+
+--🔀 [Define](https://github.com/arthurresendes/C/tree/main/EstudosCurso/define)
+Substituição de valores fixos no código usando `#define`, facilitando manutenção e clareza.
+
+--⌨️ [Entrada e Saída](https://github.com/arthurresendes/C/tree/main/EstudosCurso/entradaSaida)
+Leitura e exibição de dados no terminal com `scanf`, `printf`, `gets`, `fgets`, entre outros.
+
+--📊 [Estrutura de Dados](https://github.com/arthurresendes/C/tree/main/EstudosCurso/estrturaDados)
+Conceitos fundamentais como pilhas, filas, listas encadeadas e árvores binárias.
+
+--🧩 [Funções](https://github.com/arthurresendes/C/tree/main/EstudosCurso/funcoes)
+Criação e chamada de funções para modularizar o código, facilitar testes e reutilização.
+
+--🔃 [Condicionais](https://github.com/arthurresendes/C/tree/main/EstudosCurso/condicional)
+Uso de estruturas `if`, `else if`, `else` e `switch-case` para tomada de decisão.
+
+--🔃 [If e Else](https://github.com/arthurresendes/C/tree/main/EstudosCurso/if)
+Exercícios práticos focando em estruturas condicionais simples e compostas.
+
+--🔄 [Loops (for, while, do-while)](https://github.com/arthurresendes/C/tree/main/EstudosCurso/loop)
+Laços de repetição para automatizar tarefas e percorrer estruturas como vetores e matrizes.
+
+--🟦 [Matriz](https://github.com/arthurresendes/C/tree/main/EstudosCurso/matriz)
+Criação, leitura, manipulação e exibição de matrizes (arrays bidimensionais).
+
+--📑 [Ordenação de Vetores](https://github.com/arthurresendes/C/tree/main/EstudosCurso/ordena%C3%A7%C3%A3oVetores)
+Algoritmos de ordenação como Bubble Sort, Selection Sort e Insertion Sort aplicados em vetores.
+
+--🧭 [Ponteiros](https://github.com/arthurresendes/C/tree/main/EstudosCurso/ponteiro)
+Manipulação de endereços de memória, passagem por referência, ponteiros para ponteiros e ponteiros com structs.
+
+--🏗️ [Struct](https://github.com/arthurresendes/C/tree/main/EstudosCurso/structs)
+Agrupamento de variáveis de diferentes tipos em um mesmo bloco de dados. Base para implementação de objetos e estruturas como listas e árvores.
+
+--📦 [Vetores](https://github.com/arthurresendes/C/tree/main/EstudosCurso/vetores)
+Declaração, inicialização e manipulação de arrays unidimensionais (vetores).
+
 
