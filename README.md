@@ -1,7 +1,7 @@
 <!-- Banner animado com SVG -->
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=1000&color=08F7FE&center=true&vCenter=true&multiline=true&width=900&height=70&lines=Todo+meu+aprendizado+em+C!;Projetos%2FExerc%C3%ADcios+e+Conceitos+Importantes" alt="Typing SVG" />
-</p>
+</p> <br>
 
 ---
 
