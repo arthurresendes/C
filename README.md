@@ -7,7 +7,7 @@
 
 # <span style="color:#00BFFF;">Bem-vindo ao meu repositório de C!</span>
 
-Aqui você encontra meus projetos, exercícios e resumos dos principais conceitos em C, de forma prática e interativa!
+Aqui você encontra meus projetos, exercícios e resumos dos principais conceitos em C!
 
 ---
 
