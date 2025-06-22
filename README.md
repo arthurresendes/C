@@ -13,7 +13,7 @@ Aqui você encontra meus projetos, exercícios e resumos dos principais conceito
 
 ## :rocket: Índice
 
-- [📚 Bibliotecas](#bibliotecas)
+- [📚 Bibliotecas](https://github.com/arthurresendes/C/tree/main/EstudosCurso/Bibliotecas)
 - [🔖 Diretivas](#diretivas)
 - [🚫 Proibições](#proibições)
 - [🔁 Recursividade](#recursividade)
