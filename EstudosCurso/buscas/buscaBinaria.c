@@ -21,7 +21,7 @@ int  buscaBinaria(int vetor[] , int chave , int tam){
             inicio = meio + 1;
         }
     }
-    return 1;
+    return -1;
 }
 
 int main(){
