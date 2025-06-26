@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,7 +9,6 @@ typedef struct {
     char opB[100];
     char opC[100];
     char opD[100];
-    char result;
     char respostaCerta;
 } Pergunta;
 
@@ -85,9 +85,8 @@ void jogo() {
         scanf("%d", &continuar);
         getchar(); // limpar o buffer do enter
     } while (continuar == 1);
-    printf("Obrigado por realizar o quiz , voce fez %d pontos" , pontos);
-    exit(0);
 
+    printf("\nObrigado por jogar! Você fez %d ponto(s).\n", pontos);
 }
 
 void perguntas(Pergunta prg) {
@@ -101,8 +100,11 @@ void perguntas(Pergunta prg) {
 
     printf("Sua resposta: ");
     scanf(" %c", &resposta);  // espaço antes do %c para ignorar lixo no buffer
-    prg.result = resposta;
-    pontos++;
 
+    if (resposta == prg.respostaCerta || resposta == (prg.respostaCerta - 32)) { // aceita maiúscula e minúscula
+        pontos++;
+        printf("Resposta certa! Pontos: %d\n", pontos);
+    } else {
+        printf("Resposta errada. A resposta certa era '%c'.\n", prg.respostaCerta);
+    }
 }
-
