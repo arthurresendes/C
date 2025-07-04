@@ -10,12 +10,28 @@ int main()
 
 void principal()
 {
-    int n1, f =1;
-    printf("Digite um numero: ");
-    scanf("%d", &n1);
-    for(int i = 1 ; i <= n1 ; i++){
-        f = f * i;
+    int n1[5], maior, menor;
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("Digite um numero: ");
+        scanf("%d", &n1[i]);
+        if (i == 0)
+        {
+            maior = menor = n1[i];
+        }
+        else
+        {
+            if (maior < n1[i])
+            {
+                maior = n1[i];
+            }
+            if (menor > n1[i])
+            {
+                menor = n1[i];
+            }
+        }
     }
 
-    printf("Fatorial eh %d" , f);
+    printf("Numero maior: %d\nNumero menor: %d", maior, menor);
 }
