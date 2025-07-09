@@ -11,8 +11,6 @@ int main() {
 	return 0;
 }
 
-
-
 void arquivo() {
 	FILE *ler, *saida;
 	char linha[MAX_LINHA];
