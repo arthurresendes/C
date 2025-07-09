@@ -10,18 +10,21 @@ int main(){
 }
 
 void arquivo(){
-    char nome[3][100];
-    FILE *alunos;
-    alunos = fopen("arquivo.txt" , "w");
-
-    for(int i = 0 ; i < 3 ; i++){
-        printf("Nome aluno %d: " , i+1);
-        fgets(nome[i] , sizeof(nome[i]), stdin);
+    char linha[200];
+    FILE *leitura;
+    leitura = fopen("teste.txt" , "r");
+    
+    if (leitura == NULL) {
+        printf("Erro ao abrir o arquivo. Verifique se 'teste.txt' existe.\n");
+        return;
     }
 
-    for(int i = 0 ; i < 3 ; i++){
-        fprintf(alunos,"Nome do aluno %d eh %s\n" , i+1 , nome[i]);
+    printf("Conteúdo de 'teste.txt':\n\n");
+
+    // Lê o arquivo linha por linha
+    while (fgets(linha, sizeof(linha), leitura) != NULL) {
+        printf("%s", linha);
     }
 
-    fclose(alunos);
+    fclose(leitura);
 }
