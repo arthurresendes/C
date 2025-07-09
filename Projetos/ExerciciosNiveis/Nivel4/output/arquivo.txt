@@ -1,0 +1,6 @@
+Nome do aluno 1 eh jose
+
+Nome do aluno 2 eh ana
+
+Nome do aluno 3 eh arthur
+
